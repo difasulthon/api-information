@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 
 import { ROUTES } from '../constants';
-import { getProductById, getProducts, updatePriceById } from "../controllers/Products.controllers";
-import { Product } from "../types/Product.types";
+import { addProduct, getProductById, getProducts, updatePriceById } from "../services/Products.service";
+import { Product } from "../models/Product.type";
 
 const product = new Hono();
 
@@ -30,7 +30,7 @@ product.post(ROUTES.PRODUCTS, async (c) => {
   }
 
   const {name, price, image, brandId} = body
-  const newProduct = addUser({name, price, image, brandId})
+  const newProduct = addProduct({name, price, image, brandId})
 
   return c.json(newProduct, 201)
 })

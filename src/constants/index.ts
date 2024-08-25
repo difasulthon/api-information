@@ -1,6 +1,6 @@
 const ROUTES = {
   PRODUCTS: '/products',
-  PRODUCT: '/users/:id'
+  PRODUCT: '/product/:id'
 }
 
 const ERROR_MESSAGE = {
