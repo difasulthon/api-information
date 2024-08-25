@@ -1,12 +1,14 @@
-import Products from "../models/Product.models";
+import initialProducts from "../models/Product.models";
 import { Product } from "../types/Product.types";
 
+let products = [...initialProducts]
+
 export function getProducts(): Product[] {
-  return Products;
+  return products;
 }
 
 export function getProductById(id: string): Product {
-  const product = Products.find(item => item.id === id)
+  const product = products.find(item => item.id === id)
 
   return product
 }
@@ -24,14 +26,14 @@ export function addProduct(data: Partial<Product>) {
     availableStock: 0
   }
 
-  Products.push(newProduct)
+  products.push(newProduct)
 
   return newProduct
 }
 
 export function deleteProductById(id: string) {
-  const products = Products.filter(item => item.id !== id)
-  Products = users
+  const newProducts = products.filter(item => item.id !== id)
+  products = newProducts
 
   return `Product with id: ${id} has deleted`
 }
