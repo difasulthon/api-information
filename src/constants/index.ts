@@ -1,4 +1,5 @@
 const ROUTES = {
+  BASE: '/api',
   PRODUCTS: '/products',
   PRODUCT: '/product/:id'
 }
