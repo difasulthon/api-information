@@ -11,4 +11,7 @@ const api = new Hono();
 api.route(ROUTES.BASE, product);
 api.notFound((c) => c.json({ message: ERROR_MESSAGE.NOT_FOUND }, 404));
 
-export default api
+export default {
+  port: 80,
+  fetch: api.fetch
+}
