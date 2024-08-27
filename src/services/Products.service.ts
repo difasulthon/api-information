@@ -1,5 +1,5 @@
 import initialProducts from "../data/Product.data";
-import { Product } from "../models/Product.type";
+import { Product } from "../models/Product.model";
 
 let products = [...initialProducts]
 

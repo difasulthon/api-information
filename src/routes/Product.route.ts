@@ -2,7 +2,7 @@ import { Hono } from "hono";
 
 import { ROUTES } from '../constants';
 import { addProduct, getProductById, getProducts, updatePriceById } from "../services/Products.service";
-import { Product } from "../models/Product.type";
+import { Product } from "../models/Product.model";
 
 const product = new Hono();
 
