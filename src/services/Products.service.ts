@@ -20,7 +20,7 @@ export function addProduct(data: Partial<Product>) {
   const newProduct: Product = {
     id: newId,
     name,
-    price,
+    price: +price,
     image,
     brandId,
     availableStock: 0
@@ -40,9 +40,9 @@ export function deleteProductById(id: string) {
 
 export function updatePriceById({id, price}: Partial<Product>) {
   const products = getProducts()
-  const foundProduct: Product = users.find((item: Product) => item.id === id)
+  const foundProduct: Product = products.find((item: Product) => item.id === id)
 
-  foundProduct.price = price
+  foundProduct.price = +price
 
   return foundProduct
 }

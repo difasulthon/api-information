@@ -1,7 +1,9 @@
 import { Hono } from "hono";
 
 import { ROUTES } from '../constants';
-import { addProduct, getProductById, getProducts, updatePriceById } from "../services/Products.service";
+import { 
+  addProduct, deleteProductById, getProductById, getProducts, updatePriceById 
+} from "../services/Products.service";
 import { Product } from "../models/Product.model";
 
 const product = new Hono();
@@ -37,7 +39,7 @@ product.post(ROUTES.PRODUCTS, async (c) => {
 
 product.delete(ROUTES.PRODUCT, (c) => {
   const {id} = c.req.param()
-  const deleteProduct = deleteProductById(+id)
+  const deleteProduct = deleteProductById(id)
 
   return c.text(deleteProduct)
 })
@@ -54,7 +56,7 @@ product.patch(ROUTES.PRODUCT, async (c) => {
   }
 
   const {price} = body
-  const updatedProduct= updatePriceById({id: id, price})
+  const updatedProduct= updatePriceById({id, price})
 
   return c.json(updatedProduct)
 })
