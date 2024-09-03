@@ -1,28 +1,37 @@
 import { Hono } from "hono";
 
-import { ROUTES } from '../constants';
+import { Products } from "@prisma/client";
+
+import { ROUTES, MESSAGE } from '../constants';
 import { 
   addProduct, deleteProductById, getProductById, getProducts, updatePriceById 
 } from "../services/Products.service";
-import { Product } from "../models/Product.model";
 
 const product = new Hono();
 
-product.get(ROUTES.PRODUCTS, (c) => {
-  const products = getProducts();
+product.get(ROUTES.PRODUCTS, async (c) => {
+  const products = await getProducts();
 
-  return c.json(products, 200);
+  return c.json({
+    status: true,
+    message: MESSAGE.SUCCESS.GET_PRODUCTS,
+    data: products
+  }, 200)
 });
 
-product.get(ROUTES.PRODUCT, (c) => {
+product.get(ROUTES.PRODUCT, async (c) => {
   const id = c.req.param('id')
-  const product = getProductById(id)
+  const product = await getProductById(id)
 
-  return c.json(product, 200)
+  return c.json({
+    status: true,
+    message: MESSAGE.SUCCESS.GET_PRODUCT,
+    data: product
+  }, 200)
 })
 
 product.post(ROUTES.PRODUCTS, async (c) => {
-  let body: Partial<Product>
+  let body: Partial<Products>
   const contentType = c.req.header('Content-Type')
 
   if (contentType === 'application/json') {
@@ -31,17 +40,25 @@ product.post(ROUTES.PRODUCTS, async (c) => {
     body = await c.req.parseBody<Partial<Product>>()
   }
 
-  const {name, price, image, brandId} = body
-  const newProduct = addProduct({name, price, image, brandId})
+  const {name, price, image, brand_id} = body
+  const newProduct = await addProduct({name, price, image, brand_id})
 
-  return c.json(newProduct, 201)
+  return c.json({
+    status: true,
+    message: MESSAGE.SUCCESS.ADD_PRODUCT,
+    data: newProduct
+  }, 201)
 })
 
-product.delete(ROUTES.PRODUCT, (c) => {
+product.delete(ROUTES.PRODUCT, async (c) => {
   const {id} = c.req.param()
-  const deleteProduct = deleteProductById(id)
+  const deletedProduct = await deleteProductById(id)
 
-  return c.text(deleteProduct)
+  return c.json({
+    status: true,
+    message: MESSAGE.SUCCESS.DELETED_PRODUCT,
+    data: deletedProduct
+  })
 })
 
 product.patch(ROUTES.PRODUCT, async (c) => {
@@ -56,9 +73,13 @@ product.patch(ROUTES.PRODUCT, async (c) => {
   }
 
   const {price} = body
-  const updatedProduct= updatePriceById({id, price})
+  const updatedProduct = await updatePriceById({id, price})
 
-  return c.json(updatedProduct)
+  return c.json({
+    status: true,
+    message: MESSAGE.SUCCESS.UPDATED_PRODUCT,
+    data: updatedProduct
+  })
 })
 
 export { product };

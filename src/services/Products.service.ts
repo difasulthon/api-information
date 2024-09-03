@@ -1,48 +1,68 @@
+import { PrismaClient, Products } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
 import initialProducts from "../data/Product.data";
-import { Product } from "../models/Product.model";
+// import { Product } from "../models/Product.model";
 
 let products = [...initialProducts]
 
-export function getProducts(): Product[] {
+export async function getProducts(): Products[] {
+  const products = await prisma.products.findMany()
+
   return products;
 }
 
-export function getProductById(id: string): Product {
-  const product = products.find(item => item.id === id)
+export async function getProductById(id: string): Products {
+  const product = await prisma.products.findFirst({
+    where: {
+      id: +id
+    }
+  })
 
   return product
 }
 
-export function addProduct(data: Partial<Product>) {
-  const {name, price, brandId, image} = data;
-  const newId = crypto.randomUUID()
+export async function addProduct(data: Partial<Products>) {
+  const {name, price, brand_id, image} = data;
 
-  const newProduct: Product = {
-    id: newId,
-    name,
-    price: +price,
-    image,
-    brandId,
-    availableStock: 0
-  }
-
-  products.push(newProduct)
+  const newProduct = await prisma.products.create({
+    data: {
+      name,
+      price: +price,
+      image,
+      brand_id: +brand_id,
+      available_stock: 0
+    }
+  })
 
   return newProduct
 }
 
-export function deleteProductById(id: string) {
-  const newProducts = products.filter(item => item.id !== id)
-  products = newProducts
+export async function deleteProductById(id: string) {
+  const deletedProduct = await prisma.products.delete({
+    where: {
+      id: +id
+    }
+  })
 
-  return `Product with id: ${id} has deleted`
+  return deletedProduct
 }
 
-export function updatePriceById({id, price}: Partial<Product>) {
-  const products = getProducts()
-  const foundProduct: Product = products.find((item: Product) => item.id === id)
+export async function updatePriceById({id, price}: Partial<Products>) {
+  // const products = getProducts()
+  // const foundProduct: Products = products.find((item: Products) => item.id === id)
 
-  foundProduct.price = +price
+  // foundProduct.price = +price
 
-  return foundProduct
+  const updatedProduct = await prisma.products.update({
+    where: {
+      id: +id
+    },
+    data: {
+      price: +price
+    }
+  })
+
+  return updatedProduct
 }
