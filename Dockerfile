@@ -2,10 +2,16 @@ FROM oven/bun
 
 WORKDIR /app
 
-COPY . .
+COPY . /app
 
 RUN bun install
 
 EXPOSE 80
 
-CMD [ "bun", "dev" ]
+COPY prisma ./prisma/
+
+COPY . .
+
+RUN bunx prisma generate
+
+CMD [ "bun", "start" ]

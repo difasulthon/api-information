@@ -1,12 +1,4 @@
 services:
-  api:
-    image: api-information
-    build:
-      context: .
-    ports:
-      - "3000:80"
-    depends_on:
-      - database
   database:
     image: postgres
     ports:
@@ -14,3 +6,30 @@ services:
     env_file:
       - path: .env
         required: true
+    volumes:
+      - api-information:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d information -U difa"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: api-information
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      database:
+        condition: service_healthy
+    develop:
+      watch:
+        - path: ./src
+          action: sync
+          target: /usr/local/app/src
+        - path: ./src/package.json
+          action: rebuild
+volumes:
+  api-information:
