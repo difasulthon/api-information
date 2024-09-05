@@ -4,7 +4,8 @@ import { Product } from "@prisma/client";
 
 import { ROUTES, MESSAGE } from '../constants';
 import { 
-  addProduct, deleteProductById, getProductById, getProducts, updatePriceById 
+  addProduct, deleteProductById, getProductById, getProducts, 
+  updateProductById
 } from "../services/Products.service";
 
 const product = new Hono();
@@ -72,8 +73,11 @@ product.patch(ROUTES.PRODUCT, async (c) => {
     body = await c.req.parseBody<Partial<Product>>()
   }
 
-  const {price} = body
-  const updatedProduct = await updatePriceById({id, price})
+  const {price, name, available_stock, brand_id, image} = body
+  const newData = {
+    price, name, available_stock, brand_id, image
+  }
+  const updatedProduct = await updateProductById({id, ...newData})
 
   return c.json({
     status: true,

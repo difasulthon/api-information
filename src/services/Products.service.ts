@@ -44,13 +44,26 @@ export async function deleteProductById(id: string) {
   return deletedProduct
 }
 
-export async function updatePriceById({id, price}: Partial<Product>) {
+export async function updateProductById(data: Partial<Product>) {
+  const {
+    id,
+    name,
+    image,
+    price,
+    available_stock,
+    brand_id
+  } = data
+
   const updatedProduct = await prisma.product.update({
     where: {
       id: +id
     },
     data: {
-      price: +price
+      name: name || undefined,
+      price: price ? +price : undefined,
+      image: image || undefined,
+      available_stock: available_stock ? +available_stock : undefined,
+      brand_id: brand_id ? +brand_id : undefined
     }
   })
 
