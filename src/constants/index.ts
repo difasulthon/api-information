@@ -2,7 +2,8 @@ const ROUTES = {
   BASE: '/api',
   PRODUCTS: '/products',
   PRODUCT: '/product/:id',
-  BRANDS: 'brands'
+  BRANDS: 'brands',
+  BRAND: 'brands/:id'
 }
 
 const MESSAGE = {
@@ -15,7 +16,11 @@ const MESSAGE = {
     ADD_PRODUCT: 'Successfully adding product',
     DELETED_PRODUCT: 'Successfully deleted product',
     UPDATED_PRODUCT: 'Successfully update product',
-    ADD_BRAND: 'Successfully adding brand'
+    ADD_BRAND: 'Successfully adding brand',
+    GET_BRANDS: 'Successfully get brands',
+    GET_BRAND: 'Successfully get brand',
+    DELETED_BRAND: 'Successfully deleted brand',
+    UPDATED_BRAND: 'Successfully update brand'
   }
 }
 
