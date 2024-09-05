@@ -1,11 +1,11 @@
-import { PrismaClient, Brands } from "@prisma/client";
+import { PrismaClient, Brand } from "@prisma/client";
 
 const prisma = new PrismaClient()
 
-export async function addBrands(data: Partial<Brands>) {
+export async function addBrands(data: Partial<Brand>) {
   const {name} = data;
 
-  const newBrand = prisma.brands.create({
+  const newBrand = prisma.brand.create({
     data: {
       name
     }

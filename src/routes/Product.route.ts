@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import { Products } from "@prisma/client";
+import { Product } from "@prisma/client";
 
 import { ROUTES, MESSAGE } from '../constants';
 import { 
@@ -31,7 +31,7 @@ product.get(ROUTES.PRODUCT, async (c) => {
 })
 
 product.post(ROUTES.PRODUCTS, async (c) => {
-  let body: Partial<Products>
+  let body: Partial<Product>
   const contentType = c.req.header('Content-Type')
 
   if (contentType === 'application/json') {

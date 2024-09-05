@@ -1,20 +1,15 @@
-import { PrismaClient, Products } from '@prisma/client'
+import { PrismaClient, Product } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-import initialProducts from "../data/Product.data";
-// import { Product } from "../models/Product.model";
-
-let products = [...initialProducts]
-
-export async function getProducts(): Products[] {
-  const products = await prisma.products.findMany()
+export async function getProducts(): Product[] {
+  const products = await prisma.product.findMany()
 
   return products;
 }
 
-export async function getProductById(id: string): Products {
-  const product = await prisma.products.findFirst({
+export async function getProductById(id: string): Product {
+  const product = await prisma.product.findFirst({
     where: {
       id: +id
     }
@@ -23,10 +18,10 @@ export async function getProductById(id: string): Products {
   return product
 }
 
-export async function addProduct(data: Partial<Products>) {
+export async function addProduct(data: Partial<Product>) {
   const {name, price, brand_id, image} = data;
 
-  const newProduct = await prisma.products.create({
+  const newProduct = await prisma.product.create({
     data: {
       name,
       price: +price,
@@ -40,7 +35,7 @@ export async function addProduct(data: Partial<Products>) {
 }
 
 export async function deleteProductById(id: string) {
-  const deletedProduct = await prisma.products.delete({
+  const deletedProduct = await prisma.product.delete({
     where: {
       id: +id
     }
@@ -49,13 +44,8 @@ export async function deleteProductById(id: string) {
   return deletedProduct
 }
 
-export async function updatePriceById({id, price}: Partial<Products>) {
-  // const products = getProducts()
-  // const foundProduct: Products = products.find((item: Products) => item.id === id)
-
-  // foundProduct.price = +price
-
-  const updatedProduct = await prisma.products.update({
+export async function updatePriceById({id, price}: Partial<Product>) {
+  const updatedProduct = await prisma.product.update({
     where: {
       id: +id
     },
