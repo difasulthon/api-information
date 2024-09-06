@@ -1,9 +1,27 @@
 import { PrismaClient, Product } from '@prisma/client'
 
+import { productSchema } from '../schemas/product.schema';
+import { SORT } from '../constants';
+
 const prisma = new PrismaClient()
 
-export async function getProducts(): Product[] {
-  const products = await prisma.product.findMany()
+export async function getProducts(query: typeof productSchema): Product[] {
+  const {name, brand_id, sort, sort_by} = query
+
+  const sortBy = sort_by || 'id'
+  const sortMethod = sort || SORT.ASC
+  const orderBy = { [sortBy]: sortMethod }
+
+  const products = await prisma.product.findMany({
+    where: {
+      name: {
+        contains: name || '',
+        mode: 'insensitive'
+      },
+      brand_id: brand_id ? +brand_id : undefined,
+    },
+    orderBy
+  })
 
   return products;
 }
