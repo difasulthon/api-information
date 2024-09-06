@@ -24,7 +24,28 @@ const MESSAGE = {
   }
 }
 
+const SORT = {
+  ASC: 'asc',
+  DESC: 'desc'
+}
+
+const SORT_BY = {
+  ID: 'id',
+  NAME: 'name',
+  BRAND_ID: 'brand_id',
+  CREATED_AT: 'createdAt',
+  UPDATED_AT: 'updatedAt'
+}
+
+const TAGS = {
+  PRODUCTS: ['Products'],
+  BRANDS: ['Brands']
+}
+
 export {
   ROUTES,
-  MESSAGE
+  MESSAGE,
+  SORT,
+  SORT_BY,
+  TAGS
 }
