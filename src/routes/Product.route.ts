@@ -3,14 +3,22 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 
 import { Product } from "@prisma/client";
 
-import { ROUTES, MESSAGE, TAGS } from '../constants';
+import { 
+  ROUTES, MESSAGE, TAGS, HEADER_TYPE, CONTENT_TYPE as CONTENT_TYPE_HEADER, SORT_BY 
+} from '../constants';
 import { 
   addProduct, deleteProductById, getProductById, getProducts, 
   updateProductById
 } from "../services/Products.service";
-import { bodyAddProductSchema, bodyUpdateProductSchema, paramProductByIdSchema, queryProductSchema } from "../schemas/product.schema";
+import { 
+  bodyAddProductSchema, bodyUpdateProductSchema, paramProductByIdSchema, queryProductSchema 
+} from "../schemas/product.schema";
 
 const product = new OpenAPIHono()
+
+const {CONTENT_TYPE} = HEADER_TYPE
+const {APPLICATION_JSON} = CONTENT_TYPE_HEADER
+const {ID} = SORT_BY
 
 /**
  * GET Products
@@ -73,7 +81,7 @@ product
       tags: TAGS.PRODUCTS,
     },
     async (c) => {
-      const id = c.req.param('id')
+      const id = c.req.param(ID)
       const product = await getProductById(id)
     
       return c.json({
@@ -111,9 +119,9 @@ product
     },
     async (c) => {
       let body: Partial<Product>
-      const contentType = c.req.header('Content-Type')
+      const contentType = c.req.header(CONTENT_TYPE)
     
-      if (contentType === 'application/json') {
+      if (contentType === APPLICATION_JSON) {
         body = await c.req.json()
       } else {
         body = await c.req.parseBody<Partial<Product>>()
@@ -188,11 +196,11 @@ product
       tags: TAGS.PRODUCTS,
     },
     async (c) => {
-      const id = c.req.param('id')
+      const id = c.req.param(ID)
       let body: Partial<Product>
-      const contentType = c.req.header('Content-Type')
+      const contentType = c.req.header(CONTENT_TYPE)
     
-      if (contentType === 'application/json') {
+      if (contentType === APPLICATION_JSON) {
         body = await c.req.json()
       } else {
         body = await c.req.parseBody<Partial<Product>>()

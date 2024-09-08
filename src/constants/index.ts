@@ -3,7 +3,16 @@ const ROUTES = {
   PRODUCTS: '/products',
   PRODUCT: '/product/:id',
   BRANDS: 'brands',
-  BRAND: 'brands/:id'
+  BRAND: 'brands/:id',
+  DOC: '/doc'
+}
+
+const HEADER_TYPE = {
+  CONTENT_TYPE: 'Content-Type'
+}
+
+const CONTENT_TYPE = {
+  APPLICATION_JSON: 'application/json'
 }
 
 const MESSAGE = {
@@ -42,10 +51,22 @@ const TAGS = {
   BRANDS: ['Brands']
 }
 
+const DOC = {
+  VERSION: {
+    OPEN_API: '3.1.0',
+    INFO: '1.0.0'
+  },
+  TITLE: 'Shoes Product API',
+  DESC: 'This is the REST API for football shoe'
+}
+
 export {
   ROUTES,
+  HEADER_TYPE,
+  CONTENT_TYPE,
   MESSAGE,
   SORT,
   SORT_BY,
-  TAGS
+  TAGS,
+  DOC
 }

@@ -3,11 +3,21 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 
 import { Brand, Brands } from "@prisma/client";
 
-import { MESSAGE, ROUTES, TAGS } from "../constants";
-import { addBrands, deleteBrandById, getBrandById, getBrands, updateBrandById } from "../services/Brands.service";
-import { bodyAddBrandSchema, bodyUpdateBrandSchema, paramBrandByIdSchema, queryBrandSchema } from "../schemas/Brand.schema";
+import { 
+  MESSAGE, ROUTES, TAGS, HEADER_TYPE, CONTENT_TYPE as CONTENT_TYPE_HEADER, SORT_BY 
+} from "../constants";
+import { 
+  addBrands, deleteBrandById, getBrandById, getBrands, updateBrandById 
+} from "../services/Brands.service";
+import { 
+  bodyAddBrandSchema, bodyUpdateBrandSchema, paramBrandByIdSchema, queryBrandSchema
+} from "../schemas/Brand.schema";
 
 const brand = new OpenAPIHono()
+
+const {CONTENT_TYPE} = HEADER_TYPE
+const {APPLICATION_JSON} = CONTENT_TYPE_HEADER
+const {ID} = SORT_BY
 
 /**
  * GET Brands
@@ -70,7 +80,7 @@ brand
       tags: TAGS.BRANDS,
     },
     async (c) => {
-      const id = c.req.param('id')
+      const id = c.req.param(ID)
       const brand = await getBrandById(id)
     
       return c.json({
@@ -108,9 +118,9 @@ brand
     },
     async (c) => {
       let body: Partial<Brands>
-      const contentType = c.req.header('Content-Type')
+      const contentType = c.req.header(CONTENT_TYPE)
     
-      if (contentType === 'application/json') {
+      if (contentType === APPLICATION_JSON) {
         body = await c.req.json()
       } else {
         body = await c.req.parseBody<Partial<Brands>>()
@@ -185,11 +195,11 @@ brand
       tags: TAGS.BRANDS,
     },
     async (c) => {
-      const id = c.req.param('id')
+      const id = c.req.param(ID)
       let body: Partial<Brand>
-      const contentType = c.req.header('Content-Type')
+      const contentType = c.req.header(CONTENT_TYPE)
     
-      if (contentType === 'application/json') {
+      if (contentType === APPLICATION_JSON) {
         body = await c.req.json()
       } else {
         body = await c.req.parseBody<Partial<Brand>>()

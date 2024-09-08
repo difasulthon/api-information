@@ -1,14 +1,16 @@
 import { PrismaClient, Brand } from "@prisma/client";
 
 import { brandSchema } from "../schemas/Brand.schema";
-import { SORT } from "../constants";
+import { SORT, SORT_BY } from "../constants";
 
 const prisma = new PrismaClient()
+
+const {ID} = SORT_BY
 
 export async function getBrands(query: typeof brandSchema): Brand[] {
   const {name, sort_by, sort} = query
 
-  const sortBy = sort_by || 'id'
+  const sortBy = sort_by || ID
   const sortMethod = sort || SORT.ASC
   const orderBy = { [sortBy]: sortMethod }
 
