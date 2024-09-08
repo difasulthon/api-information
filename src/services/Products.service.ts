@@ -1,7 +1,7 @@
 import { PrismaClient, Product } from '@prisma/client'
 
 import { SORT, SORT_BY } from '../constants';
-import { productSchema } from '../schemas/product.schema';
+import { productSchema } from '../schemas/Product.schema';
 
 const prisma = new PrismaClient()
 

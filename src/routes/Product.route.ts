@@ -12,7 +12,7 @@ import {
 } from "../services/Products.service";
 import { 
   bodyAddProductSchema, bodyUpdateProductSchema, paramProductByIdSchema, queryProductSchema 
-} from "../schemas/product.schema";
+} from "../schemas/Product.schema";
 
 const product = new OpenAPIHono()
 
